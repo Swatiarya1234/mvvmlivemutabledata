@@ -1,10 +1,12 @@
-package com.wave.livedataexample.model;
+package com.wave.livedataexample.repositoryPackage;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.wave.livedataexample.service.RestApiService;
+import com.wave.livedataexample.model.Blog;
+import com.wave.livedataexample.model.BlogWrapper;
+import com.wave.livedataexample.model.RestApiService;
 import com.wave.livedataexample.service.RetrofitInstance;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class BlogRepository {
 
     public MutableLiveData<List<Blog>> getMutableLiveData() {
 
-        RestApiService apiService = RetrofitInstance.getApiService();
+       RestApiService  apiService = RetrofitInstance.getApiService();
 
         Call<BlogWrapper> call = apiService.getPopularBlog();
         // to check the api query that is fired

@@ -6,7 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.wave.livedataexample.model.Blog;
-import com.wave.livedataexample.model.BlogRepository;
+import com.wave.livedataexample.repositoryPackage.BlogRepository;
 
 import java.util.List;
 

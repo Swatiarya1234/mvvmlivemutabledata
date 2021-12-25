@@ -14,7 +14,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.wave.livedataexample.R;
 import com.wave.livedataexample.model.Blog;
+import com.wave.livedataexample.modelWeatherForecast.GetJsonValue.list;
 import com.wave.livedataexample.viewmodel.MainViewModel;
+import com.wave.livedataexample.viewmodel.WeatherMainViewModel;
 
 import java.util.List;
 
@@ -24,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     SwipeRefreshLayout swipeRefresh;
     private MainViewModel mainViewModel;
+    private WeatherMainViewModel weatherMainViewModel;
 
     BlogAdapter mBlogAdapter;
+    WeatherAdapter weatherAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +37,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initializationViews();
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        getPopularBlog();
+        weatherMainViewModel = ViewModelProviders.of(this).get(WeatherMainViewModel.class);
+        getWeather();
         // lambda expression
         swipeRefresh.setOnRefreshListener(() -> {
-            getPopularBlog();
+          //  getPopularBlog();
+            getWeather();
+        });
+    }
+
+    private void getWeather() {
+        swipeRefresh.setRefreshing(true);
+        weatherMainViewModel.getAllWeather().observe(this, new Observer<List<list>>() {
+            @Override
+            public void onChanged(@Nullable List<list> lists) {
+                swipeRefresh.setRefreshing(false);
+                prepareRecyclerViewWeather(lists);
+            }
         });
     }
 
@@ -68,6 +84,19 @@ public class MainActivity extends AppCompatActivity {
 
          */
 
+    }
+
+    private void prepareRecyclerViewWeather(List<list> list){
+        weatherAdapter = new WeatherAdapter(list);
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
+        else {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(weatherAdapter);
+        weatherAdapter.notifyDataSetChanged();
     }
 
     private void prepareRecyclerView(List<Blog> blogList) {

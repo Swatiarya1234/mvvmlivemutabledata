@@ -5,6 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.wave.livedataexample.BuildConfig.BASE_URL;
 
+import com.wave.livedataexample.model.RestApiService;
+
 /**
  * Created on : Feb 25, 2019
  * Author     : AndroidWave
@@ -12,7 +14,6 @@ import static com.wave.livedataexample.BuildConfig.BASE_URL;
 public class RetrofitInstance {
 
     private static Retrofit retrofit = null;
-
     public static RestApiService getApiService() {
         if (retrofit == null) {
 
